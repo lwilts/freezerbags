@@ -175,3 +175,33 @@ def test_sort_choice_carries_into_item_action_urls(client):
 
     resp = client.get("/items?sort=portions")
     assert f"/items/{item_id}/eat?sort=portions" in resp.text
+
+
+def test_age_badge_tier_thresholds(client):
+    import datetime as dt
+
+    today = dt.date.today()
+
+    resp = _add(client, "Fresh thing", 1)
+    item_id = _get_item_id(resp.text, "Fresh thing")
+    client.post(
+        f"/items/{item_id}/edit",
+        data={"name": "Fresh thing", "frozen_on": (today - dt.timedelta(days=170)).isoformat()},
+    )
+    assert 'age-fresh' in client.get("/").text
+
+    resp = _add(client, "Aging thing", 1)
+    item_id = _get_item_id(resp.text, "Aging thing")
+    client.post(
+        f"/items/{item_id}/edit",
+        data={"name": "Aging thing", "frozen_on": (today - dt.timedelta(days=200)).isoformat()},
+    )
+    assert 'age-amber' in client.get("/").text
+
+    resp = _add(client, "Ancient thing", 1)
+    item_id = _get_item_id(resp.text, "Ancient thing")
+    client.post(
+        f"/items/{item_id}/edit",
+        data={"name": "Ancient thing", "frozen_on": (today - dt.timedelta(days=400)).isoformat()},
+    )
+    assert 'age-red' in client.get("/").text

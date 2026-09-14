@@ -8,6 +8,7 @@ services:
     environment:
       - DATA_DIR=/data
       - TZ=Europe/London
+      - RESTORE_TOKEN=${RESTORE_TOKEN:?RESTORE_TOKEN must be set}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]

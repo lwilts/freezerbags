@@ -20,9 +20,10 @@ MAX_NAME_LEN = 80
 MIN_PORTIONS = 1
 MAX_PORTIONS = 99
 
-# Age-badge thresholds, in days since the oldest batch was frozen.
-AMBER_AFTER_DAYS = 90
-RED_AFTER_DAYS = 180
+# Age-badge thresholds, in days since the oldest batch was frozen:
+# green under 6 months, amber/yellow 6-12 months, red past a year.
+AMBER_AFTER_DAYS = 182
+RED_AFTER_DAYS = 365
 
 
 class ValidationError(ValueError):

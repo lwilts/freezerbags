@@ -15,6 +15,12 @@ spec:
     requests:
       storage: 1Gi
 ---
+# The freezerbags-secrets Secret (RESTORE_TOKEN) is deliberately NOT defined
+# here -- this repo is public, and that token gates a destructive endpoint.
+# Create it once, out of band:
+#   kubectl -n freezerbags create secret generic freezerbags-secrets \
+#     --from-literal=RESTORE_TOKEN="$(openssl rand -hex 32)"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,6 +52,11 @@ spec:
           value: /data
         - name: TZ
           value: "Europe/London"
+        - name: RESTORE_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: freezerbags-secrets
+              key: RESTORE_TOKEN
         volumeMounts:
         - name: data
           mountPath: /data

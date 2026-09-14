@@ -17,8 +17,18 @@ def client(tmp_path, monkeypatch):
 
     data_dir = tmp_path / "data"
     monkeypatch.setenv("DATA_DIR", str(data_dir))
+    monkeypatch.setenv("RESTORE_TOKEN", "test-token")
 
-    for mod in ["app.main", "app.routes", "app.services", "app.models", "app.db", "app"]:
+    for mod in [
+        "app.main",
+        "app.routes",
+        "app.internal_routes",
+        "app.backup",
+        "app.services",
+        "app.models",
+        "app.db",
+        "app",
+    ]:
         sys.modules.pop(mod, None)
 
     from fastapi.testclient import TestClient

@@ -5,7 +5,7 @@ ahead of a baby arriving. No login: open it and you're straight at the list.
 
 - Add a food description + number of portions.
 - Each item shows total portions and how long ago the oldest batch was frozen
-  (badge goes amber at 3 months, red at 6).
+  (badge goes amber/yellow at 6 months, red past a year).
 - **Eat** and **Add to** open a small dialog to pick the number of portions;
   eating drains the oldest batch first (FIFO), so the age badge always
   reflects what's actually left.
@@ -26,7 +26,7 @@ app works fully on the LAN with no internet dependency.
 python -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/pytest -q                     # run tests
-DATA_DIR=./data .venv/bin/uvicorn app.main:app --reload
+DATA_DIR=./data RESTORE_TOKEN=dev-only .venv/bin/uvicorn app.main:app --reload
 ```
 
 Then open <http://localhost:8000>.
@@ -52,6 +52,31 @@ homelab repo. To deploy via Flux, copy it into
 CI (`.github/workflows/docker-build.yml`) builds and pushes
 `ghcr.io/lwilts/freezerbags` on every push to `main` (tagged `latest`) and
 on version tags.
+
+## Backups & restore
+
+The app has no login, so a bad tap (or someone else on the LAN) can't be
+fully ruled out. Every night at 3am (and once at startup) it snapshots the
+live SQLite database to `${DATA_DIR}/backups/freezerbags-YYYY-MM-DD.db` via
+SQLite's `VACUUM INTO` — safe to run while the app is serving requests, and
+kept for 30 days.
+
+Restoring overwrites the live database, so it's not exposed as a button
+anywhere in the UI: `POST /internal/restore` requires a `X-Restore-Token`
+header matching the `RESTORE_TOKEN` the pod was started with. Run it via
+`restore.sh`, which fetches that token straight from the cluster (never
+stored in this repo) and asks for confirmation:
+
+```bash
+./restore.sh 2026-08-13
+```
+
+Create the token once, out of band (not in git, since this repo is public):
+
+```bash
+kubectl -n freezerbags create secret generic freezerbags-secrets \
+  --from-literal=RESTORE_TOKEN="$(openssl rand -hex 32)"
+```
 
 ## Data model
 
