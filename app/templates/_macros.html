@@ -1,6 +1,6 @@
 {% macro portion_picker(field_id, name='portions', start=1, max=99) %}
 {# Shared portion selector used by the add form and the eat/add-to dialogs. #}
-<div class="portion-picker" data-portion-picker data-max="{{ max }}">
+<div class="portion-picker" data-portion-picker data-max="{{ max }}" data-default="{{ start }}">
   <input type="hidden" name="{{ name }}" id="{{ field_id }}" value="{{ start }}" min="1" max="{{ max }}">
   <div class="portion-custom" role="group" aria-label="Number of portions">
     <button type="button" class="portion-adjust" data-adjust="-1" aria-label="Fewer portions">&minus;</button>

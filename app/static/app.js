@@ -44,14 +44,26 @@ function setPortion(picker, value) {
 
 function resetPicker(scope) {
   const picker = scope.querySelector("[data-portion-picker]");
-  if (picker) setPortion(picker, 1);
+  if (picker) setPortion(picker, Number(picker.dataset.default) || 1);
 }
 
-// Clear the add-food form once it's been successfully submitted via htmx.
+// Clear the add-food form once it's been successfully submitted via htmx,
+// and hide the quantity/Add row again until the next word is typed.
 document.body.addEventListener("htmx:afterRequest", (event) => {
   const form = event.target.closest("form[data-reset-on-success]");
   if (form && event.detail.successful) {
     form.reset();
     resetPicker(form);
+    const addRow = form.querySelector(".add-row");
+    if (addRow) addRow.hidden = true;
   }
+});
+
+// Reveal the quantity picker and Add button only once there's something
+// typed in the description field, for a cleaner resting interface.
+document.body.addEventListener("input", (event) => {
+  const nameInput = event.target.closest(".add-form input[type=text]");
+  if (!nameInput) return;
+  const addRow = nameInput.closest(".add-form").querySelector(".add-row");
+  if (addRow) addRow.hidden = nameInput.value.trim().length === 0;
 });
