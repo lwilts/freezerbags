@@ -9,6 +9,7 @@ ahead of a baby arriving. No login: open it and you're straight at the list.
 - **Eat** and **Add to** open a small dialog to pick the number of portions;
   eating drains the oldest batch first (FIFO), so the age badge always
   reflects what's actually left.
+- **Edit** fixes a typo'd description or a wrong frozen-on date after the fact.
 - **Discard** removes an item outright.
 - Installable as a PWA (add to home screen) for quick kitchen access.
 

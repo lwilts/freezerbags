@@ -11,6 +11,7 @@
   <div class="item-actions">
     <button type="button" class="btn btn-eat" data-open-dialog="eat-dialog-{{ item.id }}">Eat</button>
     <button type="button" class="btn btn-add" data-open-dialog="add-dialog-{{ item.id }}">Add to</button>
+    <button type="button" class="btn btn-edit" data-open-dialog="edit-dialog-{{ item.id }}">Edit</button>
     <button type="button" class="btn btn-discard" data-open-dialog="discard-dialog-{{ item.id }}">Discard</button>
   </div>
 
@@ -30,6 +31,22 @@
       <h2>Add to {{ item.name }}</h2>
       {{ portion_picker('add-portions-' ~ item.id) }}
       <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+  </dialog>
+
+  <dialog id="edit-dialog-{{ item.id }}" class="picker-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="edit-dialog-{{ item.id }}" aria-label="Close">&times;</button>
+    <form hx-post="/items/{{ item.id }}/edit" hx-target="#item-list" hx-swap="outerHTML">
+      <h2>Edit</h2>
+      <label class="field">
+        <span>Description</span>
+        <input type="text" name="name" value="{{ item.name }}" maxlength="80" required>
+      </label>
+      <label class="field">
+        <span>Frozen on</span>
+        <input type="date" name="frozen_on" value="{{ item.oldest_frozen_on.isoformat() }}" max="{{ today.isoformat() }}" required>
+      </label>
+      <button type="submit" class="btn btn-primary">Save</button>
     </form>
   </dialog>
 

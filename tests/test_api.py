@@ -106,3 +106,35 @@ def test_acting_on_discarded_item_is_rejected(client):
 
     resp = client.post(f"/items/{item_id}/eat", data={"portions": 1})
     assert "no longer in the freezer" in resp.text
+
+
+def test_edit_renames_and_updates_frozen_date(client):
+    resp = _add(client, "Stwe", 2)
+    item_id = _get_item_id(resp.text, "Stwe")
+
+    resp = client.post(
+        f"/items/{item_id}/edit", data={"name": "Stew", "frozen_on": "2025-01-01"}
+    )
+    assert "Stew" in resp.text
+    assert "frozen 1 Jan" in resp.text
+
+
+def test_edit_rejects_future_date(client):
+    resp = _add(client, "Curry", 2)
+    item_id = _get_item_id(resp.text, "Curry")
+
+    resp = client.post(
+        f"/items/{item_id}/edit", data={"name": "Curry", "frozen_on": "2099-01-01"}
+    )
+    assert "in the future" in resp.text
+
+
+def test_edit_rejects_rename_that_collides_with_another_item(client):
+    _add(client, "Chilli", 2)
+    resp = _add(client, "Soup", 3)
+    soup_id = _get_item_id(resp.text, "Soup")
+
+    resp = client.post(
+        f"/items/{soup_id}/edit", data={"name": "Chilli", "frozen_on": "2025-01-01"}
+    )
+    assert "already in the freezer" in resp.text

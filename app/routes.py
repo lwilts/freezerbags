@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 
 from fastapi import APIRouter, Form, Request
@@ -17,7 +18,7 @@ templates.env.filters["dayshort"] = lambda d: d.strftime("%-d %b")
 def _list_context(error: str | None = None) -> dict:
     with get_session() as session:
         items = services.list_active(session)
-    return {"items": items, "error": error}
+    return {"items": items, "error": error, "today": services.today_london()}
 
 
 @router.get("/")
@@ -59,6 +60,16 @@ def add_to_item(request: Request, item_id: int, portions: int = Form(...)):
     try:
         with get_session() as session:
             services.add_batch(session, item_id, portions)
+    except services.ValidationError as exc:
+        return _list_fragment(request, error=str(exc))
+    return _list_fragment(request)
+
+
+@router.post("/items/{item_id}/edit")
+def edit_item(request: Request, item_id: int, name: str = Form(...), frozen_on: date = Form(...)):
+    try:
+        with get_session() as session:
+            services.edit_item(session, item_id, name, frozen_on)
     except services.ValidationError as exc:
         return _list_fragment(request, error=str(exc))
     return _list_fragment(request)

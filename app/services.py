@@ -155,6 +155,28 @@ def add_batch(session: Session, item_id: int, portions: int) -> Item:
     return item
 
 
+def edit_item(session: Session, item_id: int, name: str, frozen_on: dt.date) -> Item:
+    """Rename an item and/or correct its oldest batch's freeze date.
+
+    "Frozen on" only has one clear meaning once an item has several batches:
+    the oldest one, since that's what's shown and what drives the age badge.
+    """
+    name = _clean_name(name)
+    item = _get_active_item(session, item_id)
+
+    if frozen_on > today_london():
+        raise ValidationError("Frozen date can't be in the future.")
+
+    other = _find_active_item_by_name(session, name)
+    if other is not None and other.id != item.id:
+        raise ValidationError(f'"{name}" is already in the freezer — use "Add to" instead.')
+
+    oldest = min(item.batches, key=lambda b: b.frozen_on)
+    oldest.frozen_on = frozen_on
+    item.name = name
+    return item
+
+
 def _archive_if_empty(item: Item) -> None:
     if not item.batches:
         item.archived_at = dt.datetime.now(LONDON)

@@ -83,7 +83,6 @@ input[type="text"] {
 }
 
 input[type="text"]:focus,
-.portion-step:focus-visible,
 .portion-adjust:focus-visible,
 .btn:focus-visible {
   outline: 2px solid var(--brand);
@@ -100,6 +99,7 @@ input[type="text"]:focus,
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .btn-primary {
@@ -189,12 +189,13 @@ input[type="text"]:focus,
 
 .item-actions {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 
 .btn-eat { border-color: var(--fresh); color: var(--fresh); }
 .btn-add { border-color: var(--brand); color: var(--brand); }
+.btn-edit { border-color: var(--text-muted); color: var(--text-muted); }
 .btn-discard { border-color: var(--danger); color: var(--danger); }
 
 /* Dialogs */
@@ -249,51 +250,51 @@ dialog form {
 .dialog-actions .btn,
 .dialog-actions form .btn { width: 100%; }
 
-/* Portion picker: a row of preset numbers, plus a fine +/- adjuster below. */
-.portion-steps {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-}
-
+/* Portion picker: just a +/- adjuster, sized for fast repeat tapping.
+   touch-action: manipulation stops Safari/Chrome from treating quick
+   repeated taps as a double-tap-to-zoom gesture. */
 .portion-custom {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 10px;
+  gap: 20px;
 }
 
-.portion-step,
 .portion-adjust {
-  min-height: 44px;
+  min-width: 56px;
+  min-height: 56px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.portion-value {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.field input {
+  font-size: 1rem;
+  padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.portion-step {
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-}
-
-.portion-adjust {
-  min-width: 44px;
-}
-
-.portion-value {
-  min-width: 32px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-@media (max-width: 380px) {
-  .item-actions { grid-template-columns: 1fr 1fr; }
-  .btn-discard { grid-column: 1 / -1; }
+  min-height: 44px;
+  font-family: inherit;
 }

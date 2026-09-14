@@ -26,12 +26,6 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  const step = event.target.closest(".portion-step");
-  if (step) {
-    setPortion(step.closest("[data-portion-picker]"), Number(step.dataset.set));
-    return;
-  }
-
   const adjust = event.target.closest(".portion-adjust");
   if (adjust) {
     const picker = adjust.closest("[data-portion-picker]");
