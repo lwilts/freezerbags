@@ -6,8 +6,10 @@
 
   <form class="add-form" hx-post="/items" hx-target="#item-list" hx-swap="outerHTML" data-reset-on-success>
     <input type="text" name="name" placeholder="What did you cook?" maxlength="80" required autocomplete="off">
-    {{ portion_picker('add-portions') }}
-    <button type="submit" class="btn btn-primary">Add</button>
+    <div class="add-row">
+      {{ portion_picker('add-portions') }}
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
   </form>
 
   {% include "_list.html" %}

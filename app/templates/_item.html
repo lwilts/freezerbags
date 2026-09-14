@@ -1,5 +1,6 @@
 {% from "_macros.html" import portion_picker %}
 <li class="item">
+  <button type="button" class="discard-x" data-open-dialog="discard-dialog-{{ item.id }}" aria-label="Discard {{ item.name }}">&times;</button>
   <div class="item-info">
     <span class="item-name">{{ item.name }}</span>
     <span class="item-portions">{{ item.total_portions }} portion{{ 's' if item.total_portions != 1 else '' }}</span>
@@ -12,7 +13,6 @@
     <button type="button" class="btn btn-eat" data-open-dialog="eat-dialog-{{ item.id }}">Eat</button>
     <button type="button" class="btn btn-add" data-open-dialog="add-dialog-{{ item.id }}">Add to</button>
     <button type="button" class="btn btn-edit" data-open-dialog="edit-dialog-{{ item.id }}">Edit</button>
-    <button type="button" class="btn btn-discard" data-open-dialog="discard-dialog-{{ item.id }}">Discard</button>
   </div>
 
   <dialog id="eat-dialog-{{ item.id }}" class="picker-dialog">

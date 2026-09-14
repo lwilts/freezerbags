@@ -138,3 +138,16 @@ def test_edit_rejects_rename_that_collides_with_another_item(client):
         f"/items/{soup_id}/edit", data={"name": "Chilli", "frozen_on": "2025-01-01"}
     )
     assert "already in the freezer" in resp.text
+
+
+def test_list_is_sorted_by_frozen_date_ascending(client):
+    resp = _add(client, "New item", 1)
+    new_id = _get_item_id(resp.text, "New item")
+    resp = _add(client, "Old item", 1)
+    old_id = _get_item_id(resp.text, "Old item")
+
+    # Backdate "Old item" so it's the oldest despite being added second.
+    client.post(f"/items/{old_id}/edit", data={"name": "Old item", "frozen_on": "2020-01-01"})
+
+    resp = client.get("/")
+    assert resp.text.index("Old item") < resp.text.index("New item")

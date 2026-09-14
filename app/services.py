@@ -102,6 +102,7 @@ def _to_view(item: Item, *, today: dt.date) -> ItemView:
 
 
 def list_active(session: Session) -> list[ItemView]:
+    """Active items, oldest frozen batch first -- what most needs eating soonest."""
     today = today_london()
     items = (
         session.execute(
@@ -112,7 +113,9 @@ def list_active(session: Session) -> list[ItemView]:
     )
     # An item can only be active with at least one batch (see _archive_if_empty),
     # but guard anyway so a stray empty row never breaks the whole list render.
-    return [_to_view(item, today=today) for item in items if item.batches]
+    views = [_to_view(item, today=today) for item in items if item.batches]
+    views.sort(key=lambda v: v.oldest_frozen_on)
+    return views
 
 
 def _find_active_item_by_name(session: Session, name: str) -> Item | None:

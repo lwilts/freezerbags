@@ -139,6 +139,7 @@ input[type="text"]:focus,
 }
 
 .item {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -148,11 +149,29 @@ input[type="text"]:focus,
   gap: 10px;
 }
 
+.discard-x {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--danger);
+  background: var(--surface);
+  color: var(--danger);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
 .item-info {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
+  padding-right: 36px;
 }
 
 .item-name {
@@ -189,18 +208,18 @@ input[type="text"]:focus,
 
 .item-actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 
 .btn-eat { border-color: var(--fresh); color: var(--fresh); }
 .btn-add { border-color: var(--brand); color: var(--brand); }
 .btn-edit { border-color: var(--text-muted); color: var(--text-muted); }
-.btn-discard { border-color: var(--danger); color: var(--danger); }
 
-/* Dialogs */
+/* Dialogs. No `position` override here: a modal <dialog> is fixed and
+   viewport-centered by the UA stylesheet regardless of page scroll, and
+   that already gives .dialog-close a containing block to anchor to. */
 dialog {
-  position: relative;
   border: none;
   border-radius: 16px;
   padding: 20px;
@@ -249,6 +268,16 @@ dialog form {
 .dialog-actions form { flex: 1; }
 .dialog-actions .btn,
 .dialog-actions form .btn { width: 100%; }
+
+.add-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-row .btn-primary {
+  flex: 1;
+}
 
 /* Portion picker: just a +/- adjuster, sized for fast repeat tapping.
    touch-action: manipulation stops Safari/Chrome from treating quick
