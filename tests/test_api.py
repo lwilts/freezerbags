@@ -151,3 +151,27 @@ def test_list_is_sorted_by_frozen_date_ascending(client):
 
     resp = client.get("/")
     assert resp.text.index("Old item") < resp.text.index("New item")
+
+
+def test_list_can_sort_by_fewest_portions(client):
+    _add(client, "Big batch", 8)
+    _add(client, "Small batch", 2)
+
+    resp = client.get("/items?sort=portions")
+    assert resp.text.index("Small batch") < resp.text.index("Big batch")
+
+
+def test_sort_toggle_marks_the_active_option(client):
+    resp = client.get("/items?sort=portions")
+    assert 'class="sort-btn active"' in resp.text
+
+    resp = client.get("/items?sort=frozen")
+    assert 'class="sort-btn active"' in resp.text
+
+
+def test_sort_choice_carries_into_item_action_urls(client):
+    resp = _add(client, "Item A", 5)
+    item_id = _get_item_id(resp.text, "Item A")
+
+    resp = client.get("/items?sort=portions")
+    assert f"/items/{item_id}/eat?sort=portions" in resp.text

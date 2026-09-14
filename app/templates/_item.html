@@ -17,7 +17,7 @@
 
   <dialog id="eat-dialog-{{ item.id }}" class="picker-dialog">
     <button type="button" class="dialog-close" data-close-dialog="eat-dialog-{{ item.id }}" aria-label="Close">&times;</button>
-    <form hx-post="/items/{{ item.id }}/eat" hx-target="#item-list" hx-swap="outerHTML">
+    <form hx-post="/items/{{ item.id }}/eat?sort={{ sort }}" hx-target="#item-list" hx-swap="outerHTML">
       <h2>Eat {{ item.name }}</h2>
       <p class="dialog-sub">{{ item.total_portions }} portion{{ 's' if item.total_portions != 1 else '' }} left</p>
       {{ portion_picker('eat-portions-' ~ item.id, max=item.total_portions) }}
@@ -27,7 +27,7 @@
 
   <dialog id="add-dialog-{{ item.id }}" class="picker-dialog">
     <button type="button" class="dialog-close" data-close-dialog="add-dialog-{{ item.id }}" aria-label="Close">&times;</button>
-    <form hx-post="/items/{{ item.id }}/add" hx-target="#item-list" hx-swap="outerHTML">
+    <form hx-post="/items/{{ item.id }}/add?sort={{ sort }}" hx-target="#item-list" hx-swap="outerHTML">
       <h2>Add to {{ item.name }}</h2>
       {{ portion_picker('add-portions-' ~ item.id) }}
       <button type="submit" class="btn btn-primary">Confirm</button>
@@ -36,7 +36,7 @@
 
   <dialog id="edit-dialog-{{ item.id }}" class="picker-dialog">
     <button type="button" class="dialog-close" data-close-dialog="edit-dialog-{{ item.id }}" aria-label="Close">&times;</button>
-    <form hx-post="/items/{{ item.id }}/edit" hx-target="#item-list" hx-swap="outerHTML">
+    <form hx-post="/items/{{ item.id }}/edit?sort={{ sort }}" hx-target="#item-list" hx-swap="outerHTML">
       <h2>Edit</h2>
       <label class="field">
         <span>Description</span>
@@ -56,7 +56,7 @@
     <p>This removes all {{ item.total_portions }} remaining portion{{ 's' if item.total_portions != 1 else '' }}.</p>
     <div class="dialog-actions">
       <button type="button" class="btn" data-close-dialog="discard-dialog-{{ item.id }}">Cancel</button>
-      <form hx-post="/items/{{ item.id }}/discard" hx-target="#item-list" hx-swap="outerHTML">
+      <form hx-post="/items/{{ item.id }}/discard?sort={{ sort }}" hx-target="#item-list" hx-swap="outerHTML">
         <button type="submit" class="btn btn-danger">Discard</button>
       </form>
     </div>

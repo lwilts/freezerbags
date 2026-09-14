@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import mimetypes
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -10,6 +11,10 @@ from .db import init_db
 from .routes import router
 
 APP_DIR = Path(__file__).resolve().parent
+
+# The base image's mimetypes database doesn't know .woff2, so StaticFiles
+# would otherwise serve our vendored fonts as text/plain.
+mimetypes.add_type("font/woff2", ".woff2")
 
 
 @asynccontextmanager

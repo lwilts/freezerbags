@@ -4,7 +4,7 @@
 <main class="page">
   <h1>🧊 FreezerBags</h1>
 
-  <form class="add-form" hx-post="/items" hx-target="#item-list" hx-swap="outerHTML" data-reset-on-success>
+  <form class="add-form" hx-post="/items?sort={{ sort }}" hx-target="#item-list" hx-swap="outerHTML" data-reset-on-success>
     <input type="text" name="name" placeholder="What did you cook?" maxlength="80" required autocomplete="off">
     <div class="add-row">
       {{ portion_picker('add-portions') }}
