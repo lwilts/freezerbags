@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_macros.html" import portion_picker %}
+{% block body %}
+<main class="page">
+  <h1>🧊 FreezerBags</h1>
+
+  <form class="add-form" hx-post="/items" hx-target="#item-list" hx-swap="outerHTML" data-reset-on-success>
+    <input type="text" name="name" placeholder="What did you cook?" maxlength="80" required autocomplete="off">
+    {{ portion_picker('add-portions') }}
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+
+  {% include "_list.html" %}
+</main>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% from "_macros.html" import portion_picker %}
+<li class="item">
+  <div class="item-info">
+    <span class="item-name">{{ item.name }}</span>
+    <span class="item-portions">{{ item.total_portions }} portion{{ 's' if item.total_portions != 1 else '' }}</span>
+    <span class="age-badge age-{{ item.tier }}">
+      <span class="age-dot" aria-hidden="true"></span>
+      frozen {{ item.oldest_frozen_on | dayshort }} &middot; {{ item.age_days | age }}
+    </span>
+  </div>
+  <div class="item-actions">
+    <button type="button" class="btn btn-eat" data-open-dialog="eat-dialog-{{ item.id }}">Eat</button>
+    <button type="button" class="btn btn-add" data-open-dialog="add-dialog-{{ item.id }}">Add to</button>
+    <button type="button" class="btn btn-discard" data-open-dialog="discard-dialog-{{ item.id }}">Discard</button>
+  </div>
+
+  <dialog id="eat-dialog-{{ item.id }}" class="picker-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="eat-dialog-{{ item.id }}" aria-label="Close">&times;</button>
+    <form hx-post="/items/{{ item.id }}/eat" hx-target="#item-list" hx-swap="outerHTML">
+      <h2>Eat {{ item.name }}</h2>
+      <p class="dialog-sub">{{ item.total_portions }} portion{{ 's' if item.total_portions != 1 else '' }} left</p>
+      {{ portion_picker('eat-portions-' ~ item.id, max=item.total_portions) }}
+      <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+  </dialog>
+
+  <dialog id="add-dialog-{{ item.id }}" class="picker-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="add-dialog-{{ item.id }}" aria-label="Close">&times;</button>
+    <form hx-post="/items/{{ item.id }}/add" hx-target="#item-list" hx-swap="outerHTML">
+      <h2>Add to {{ item.name }}</h2>
+      {{ portion_picker('add-portions-' ~ item.id) }}
+      <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+  </dialog>
+
+  <dialog id="discard-dialog-{{ item.id }}" class="confirm-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="discard-dialog-{{ item.id }}" aria-label="Close">&times;</button>
+    <h2>Discard {{ item.name }}?</h2>
+    <p>This removes all {{ item.total_portions }} remaining portion{{ 's' if item.total_portions != 1 else '' }}.</p>
+    <div class="dialog-actions">
+      <button type="button" class="btn" data-close-dialog="discard-dialog-{{ item.id }}">Cancel</button>
+      <form hx-post="/items/{{ item.id }}/discard" hx-target="#item-list" hx-swap="outerHTML">
+        <button type="submit" class="btn btn-danger">Discard</button>
+      </form>
+    </div>
+  </dialog>
+</li>

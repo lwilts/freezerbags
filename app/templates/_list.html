@@ -1,0 +1,16 @@
+{% from "_macros.html" import portion_picker %}
+<section id="item-list">
+  {% if error %}
+  <p class="error" role="alert">{{ error }}</p>
+  {% endif %}
+
+  {% if items %}
+  <ul class="items">
+    {% for item in items %}
+      {% include "_item.html" %}
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty">Nothing in the freezer yet &mdash; add your first batch above.</p>
+  {% endif %}
+</section>
