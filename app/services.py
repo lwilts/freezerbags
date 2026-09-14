@@ -107,9 +107,10 @@ DEFAULT_SORT = "frozen"
 
 def list_active(session: Session, sort: str = DEFAULT_SORT) -> list[ItemView]:
     """Active items, sorted ascending by frozen date (oldest first, the
-    default) or by portions remaining (fewest first). An unrecognised sort
-    value quietly falls back to the default rather than erroring -- this is
-    a display option from our own UI, not user input worth rejecting.
+    default) or descending by portions remaining (most first). An
+    unrecognised sort value quietly falls back to the default rather than
+    erroring -- this is a display option from our own UI, not user input
+    worth rejecting.
     """
     today = today_london()
     items = (
@@ -123,7 +124,7 @@ def list_active(session: Session, sort: str = DEFAULT_SORT) -> list[ItemView]:
     # but guard anyway so a stray empty row never breaks the whole list render.
     views = [_to_view(item, today=today) for item in items if item.batches]
     if sort == "portions":
-        views.sort(key=lambda v: v.total_portions)
+        views.sort(key=lambda v: v.total_portions, reverse=True)
     else:
         views.sort(key=lambda v: v.oldest_frozen_on)
     return views

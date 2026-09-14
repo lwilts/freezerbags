@@ -4,7 +4,7 @@
     <button type="button" class="sort-btn{{ ' active' if sort == 'frozen' else '' }}"
       hx-get="/items?sort=frozen" hx-target="#item-list" hx-swap="outerHTML">Oldest first</button>
     <button type="button" class="sort-btn{{ ' active' if sort == 'portions' else '' }}"
-      hx-get="/items?sort=portions" hx-target="#item-list" hx-swap="outerHTML">Fewest portions</button>
+      hx-get="/items?sort=portions" hx-target="#item-list" hx-swap="outerHTML">Most portions</button>
   </div>
 
   {% if error %}

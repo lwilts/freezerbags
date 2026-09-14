@@ -110,7 +110,6 @@ h2 {
   background: var(--surface);
   border: 3px solid var(--border);
   border-radius: 8px;
-  box-shadow: 5px 5px 0 var(--border);
   padding: 16px;
   margin-bottom: 24px;
 }
@@ -147,13 +146,6 @@ input[type="text"]:focus,
   letter-spacing: 0.03em;
   cursor: pointer;
   touch-action: manipulation;
-  box-shadow: 3px 3px 0 var(--border);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
-}
-
-.btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: none;
 }
 
 .btn-primary {
@@ -203,13 +195,6 @@ input[type="text"]:focus,
   letter-spacing: 0.02em;
   cursor: pointer;
   touch-action: manipulation;
-  box-shadow: 2px 2px 0 var(--border);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
-}
-
-.sort-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
 }
 
 .sort-btn.active {
@@ -231,7 +216,6 @@ input[type="text"]:focus,
   background: var(--surface);
   border: 3px solid var(--border);
   border-radius: 8px;
-  box-shadow: 5px 5px 0 var(--border);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -253,12 +237,6 @@ input[type="text"]:focus,
   line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
-  box-shadow: 2px 2px 0 var(--border);
-}
-
-.discard-x:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
 }
 
 .item-info {
@@ -270,8 +248,8 @@ input[type="text"]:focus,
 }
 
 .item-name {
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-family: "Archivo Black", "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
   flex: 1 1 100%;
 }
 
@@ -326,7 +304,6 @@ dialog {
   width: min(90vw, 380px);
   background: var(--surface);
   color: var(--text);
-  box-shadow: 6px 6px 0 var(--border);
 }
 
 dialog::backdrop {
@@ -353,12 +330,6 @@ dialog form {
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 2px 2px 0 var(--border);
-}
-
-.dialog-close:active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
 }
 
 .dialog-sub {
@@ -408,13 +379,6 @@ dialog form {
   font-size: 1.4rem;
   cursor: pointer;
   touch-action: manipulation;
-  box-shadow: 3px 3px 0 var(--border);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
-}
-
-.portion-adjust:active {
-  transform: translate(3px, 3px);
-  box-shadow: none;
 }
 
 .portion-value {

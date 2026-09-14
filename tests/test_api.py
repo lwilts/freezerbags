@@ -153,12 +153,12 @@ def test_list_is_sorted_by_frozen_date_ascending(client):
     assert resp.text.index("Old item") < resp.text.index("New item")
 
 
-def test_list_can_sort_by_fewest_portions(client):
-    _add(client, "Big batch", 8)
+def test_list_can_sort_by_most_portions(client):
     _add(client, "Small batch", 2)
+    _add(client, "Big batch", 8)
 
     resp = client.get("/items?sort=portions")
-    assert resp.text.index("Small batch") < resp.text.index("Big batch")
+    assert resp.text.index("Big batch") < resp.text.index("Small batch")
 
 
 def test_sort_toggle_marks_the_active_option(client):
